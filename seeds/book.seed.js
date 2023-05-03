@@ -28,6 +28,10 @@ const bookList = [
     title: "Pride and Prejudice",
     author: "Jane Austen",
     pages: 279,
+    publisher: {
+      name: "Altaya",
+      country: "Spain",
+    },
   },
 ];
 
@@ -35,23 +39,33 @@ for (let i = 0; i < 50; i++) {
   const newBook = {
     title: faker.lorem.words(),
     author: faker.name.fullName(),
-    pages: faker.datatype.number({ min: 100, max: 500 })
+    pages: faker.datatype.number({ min: 100, max: 500 }),
   };
   bookList.push(newBook);
 }
 
-connect().then(() => {
-  console.log("Tenemos conexión");
+const bookSeed = async () => {
+  try {
+    await connect();
+    console.log("Tenemos conexión");
 
-  // Borrar datos
-  Book.collection.drop().then(() => {
+    // Borrar datos
+    await Book.collection.drop();
     console.log("Usuarios eliminados");
 
     // Añadimos usuarios
     const documents = bookList.map((book) => new Book(book));
-    Book.insertMany(documents)
-      .then(() => console.log("Datos guardados correctamente!"))
-      .catch((error) => console.error(error))
-      .finally(() => mongoose.disconnect());
-  });
-});
+    await Book.insertMany(documents);
+
+    console.log("Datos guardados correctamente!");
+  } catch (error) {
+    console.error("ERROR AL CONECTAR CON LA BBDD");
+    console.error(error);
+  } finally {
+    mongoose.disconnect();
+  }
+};
+
+console.log("ANTES");
+bookSeed(); // ESPERO VER: "Tenemos conexión", "Coches eliminados" y "Datos guardados correctamente!"
+console.log("DESPUÉS");
