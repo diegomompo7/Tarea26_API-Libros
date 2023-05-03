@@ -4,7 +4,7 @@ const { bookRouter } = require("./routes/book.routes.js");
 
 const main = async () => {
   const { connect } = require("./db.js");
-  await connect();
+  const database = await connect();
 
   // Modelos
   const { Book } = require("./model/Book.js");
@@ -17,7 +17,7 @@ const main = async () => {
   //Rutas
   const router = express.Router();
   router.get("/", (req, res) => {
-    res.send("Esta es la home de nuestra API de libros");
+    res.send(`Esta es la home de nuestra API. Estamos utilizando la BBDD de ${database.connection.name} `);
     console.log();
   });
   router.get("*", (req, res) => {
