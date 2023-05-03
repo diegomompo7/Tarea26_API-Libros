@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const { connect } = require("../db.js");
 const { Book } = require("../model/Book.js");
 const { faker } = require("@faker-js/faker");
+const { Author } = require("../model/Author.js")
+
+
+const authorDocument = await author.save()
 
 const bookList = [
   {

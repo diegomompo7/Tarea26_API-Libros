@@ -1,6 +1,7 @@
 // Conexión a la BBDD;
 const express = require("express");
 const { bookRouter } = require("./routes/book.routes.js");
+const { authorRouter } = require("./routes/author.routes.js")
 
 const main = async () => {
   const { connect } = require("./db.js");
@@ -26,6 +27,7 @@ const main = async () => {
 
   server.use("/", router);
   server.use("/books", bookRouter);
+  server.use("/authors", authorRouter);
 
   server.listen(PORT, () => {
     console.log(`Server levantado en el puerto ${PORT}`);

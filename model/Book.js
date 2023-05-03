@@ -2,15 +2,16 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Creamos el schema del usuario
-const userSchema = new Schema(
+const bookSchema = new Schema(
   {
     title: {
       type: String,
       required: true,
     },
     author: {
-      type: String,
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Author",
+      required: false,
     },
     pages: {
       type: Number,
@@ -34,5 +35,5 @@ const userSchema = new Schema(
   }
 );
 
-const Book = mongoose.model("Book", userSchema);
+const Book = mongoose.model("Book", bookSchema);
 module.exports = { Book };
