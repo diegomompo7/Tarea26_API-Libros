@@ -55,18 +55,23 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const user = new User(req.body);
+    const book = new Book(req.body);
     const createdBook = await book.save();
     return res.status(201).json(createdBook);
   } catch (error) {
-    res.status(500).json(error);
+    console.error(error);
+    if (error?.name === "ValidationError") {
+      res.status(400).json(error);
+    } else {
+      res.status(500).json(error);
+    }
   }
 });
 
 router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const bookDeleted = await User.findByIdAndDelete(id);
+    const bookDeleted = await Book.findByIdAndDelete(id);
     if (bookDeleted) {
       res.json(bookDeleted);
     } else {
@@ -79,14 +84,19 @@ router.delete("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const bookUpdated = await User.findByIdAndUpdate(id, req.body, { new: true });
+    const bookUpdated = await Book.findByIdAndUpdate(id, req.body, { new: true });
     if (bookUpdated) {
       res.json(bookUpdated);
     } else {
       res.status(404).json({});
     }
   } catch (error) {
-    res.status(500).json(error);
+    console.error(error);
+    if (error?.name === "ValidationError") {
+      res.status(400).json(error);
+    } else {
+      res.status(500).json(error);
+    }
   }
 });
 

@@ -54,7 +54,7 @@ router.get("/:id", (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const user = new User(req.body);
+    const author = new Author(req.body);
     const createdAuthor = await author.save();
     return res.status(201).json(createdAuthor);
   } catch (error) {
@@ -65,7 +65,7 @@ router.post("/", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const authorDeleted = await User.findByIdAndDelete(id);
+    const authorDeleted = await Author.findByIdAndDelete(id);
     if (authorDeleted) {
       res.json(authorDeleted);
     } else {
@@ -78,7 +78,7 @@ router.delete("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const authorUpdated = await User.findByIdAndUpdate(id, req.body, { new: true });
+    const authorUpdated = await Author.findByIdAndUpdate(id, req.body, { new: true });
     if (authorUpdated) {
       res.json(authorUpdated);
     } else {

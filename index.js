@@ -2,20 +2,25 @@
 const express = require("express");
 const { bookRouter } = require("./routes/book.routes.js");
 const { authorRouter } = require("./routes/author.routes.js")
+const cors = require("cors");
 
 const main = async () => {
   const { connect } = require("./db.js");
   const database = await connect();
 
   // Modelos
-  const { Book } = require("./model/Book.js");
 
   const PORT = 3000;
   const server = express();
   server.use(express.json());
   server.use(express.urlencoded({ extented: false }));
+  server.use(
+    cors({
+      origin: "http://localhost:3000",
+    })
+  );
 
-  //Rutas
+  // Rutas
   const router = express.Router();
   router.get("/", (req, res) => {
     res.send(`Esta es la home de nuestra API. Estamos utilizando la BBDD de ${database.connection.name} `);

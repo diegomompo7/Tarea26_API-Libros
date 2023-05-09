@@ -2,31 +2,31 @@ const mongoose = require("mongoose");
 const { connect } = require("../db.js");
 const { Book } = require("../model/Book.js");
 const { faker } = require("@faker-js/faker");
-const { Author } = require("../model/Author.js")
-
-
-const authorDocument = await author.save()
 
 const bookList = [
   {
     title: "Harry Potter",
     author: "J.K. Rowling",
     pages: 543,
+    publisher: { name: "Penguin Random House", country: "United States" }
   },
   {
     title: "1984",
     author: "George Orwell",
     pages: 328,
+    publisher: { name: "Bloomsbury", country: "United Kingdom" }
   },
   {
     title: "To Kill a Mockingbird",
     author: "Harper Lee",
     pages: 281,
+    publisher: { name: "Gallimard", country: "France" }
   },
   {
     title: "The Great Gatsby",
     author: "F. Scott Fitzgerald",
     pages: 180,
+    publisher: { name: "Shueisha", country: "Japan" }
   },
   {
     title: "Pride and Prejudice",
