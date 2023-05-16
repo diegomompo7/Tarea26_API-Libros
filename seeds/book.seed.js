@@ -6,31 +6,26 @@ const { faker } = require("@faker-js/faker");
 const bookList = [
   {
     title: "Harry Potter",
-    author: "J.K. Rowling",
     pages: 543,
     publisher: { name: "Penguin Random House", country: "United States" }
   },
   {
     title: "1984",
-    author: "George Orwell",
     pages: 328,
     publisher: { name: "Bloomsbury", country: "United Kingdom" }
   },
   {
     title: "To Kill a Mockingbird",
-    author: "Harper Lee",
     pages: 281,
     publisher: { name: "Gallimard", country: "France" }
   },
   {
     title: "The Great Gatsby",
-    author: "F. Scott Fitzgerald",
     pages: 180,
     publisher: { name: "Shueisha", country: "Japan" }
   },
   {
     title: "Pride and Prejudice",
-    author: "Jane Austen",
     pages: 279,
     publisher: {
       name: "Altaya",
@@ -42,7 +37,6 @@ const bookList = [
 for (let i = 0; i < 50; i++) {
   const newBook = {
     title: faker.lorem.words(),
-    author: faker.name.fullName(),
     pages: faker.datatype.number({ min: 100, max: 500 }),
   };
   bookList.push(newBook);
@@ -50,8 +44,10 @@ for (let i = 0; i < 50; i++) {
 
 const bookSeed = async () => {
   try {
-    await connect();
+    const database = await connect();
     console.log("Tenemos conexión");
+
+    console.log(database.connection.name)
 
     // Borrar datos
     await Book.collection.drop();

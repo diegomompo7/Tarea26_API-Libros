@@ -1,5 +1,8 @@
 const express = require("express");
 const { Author } = require("../model/Author.js");
+const fs = require("fs");
+const multer = require("multer");
+const upload = multer({ dest: "public" });
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -86,6 +89,33 @@ router.put("/:id", async (req, res) => {
     }
   } catch (error) {
     res.status(500).json(error);
+  }
+});
+
+router.post("/logo-upload", upload.single("logo"), async (req, res, next) => {
+  try {
+    // Renombrado de la imagen
+    const originalname = req.file.originalname;
+    const path = req.file.path;
+    const newPath = path + "_" + originalname;
+    fs.renameSync(path, newPath);
+
+    // Busqueda de la marca
+    const authorId = req.body.authorId;
+    const author = await Author.findById(authorId);
+
+    if (author) {
+      author.logoImage = newPath;
+      await author.save();
+      res.json(author);
+
+      console.log("Marca modificada correctamente!");
+    } else {
+      fs.unlinkSync(newPath);
+      res.status(404).send("Marca no encontrada");
+    }
+  } catch (error) {
+    next(error);
   }
 });
 

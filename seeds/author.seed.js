@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const { connect } = require("../db.js");
 const { Author } = require("../model/Author.js");
-const { faker } = require("@faker-js/faker");
 
 const authorList = [
   { name: "Gabriel García Márquez", country: "Colombia" },
@@ -15,15 +14,6 @@ const authorList = [
   { name: "Haruki Murakami", country: "Japan" },
   { name: "Chinua Achebe", country: "Nigeria" },
 ];
-
-for (let i = 0; i < 50; i++) {
-  const newAuthor = {
-    title: faker.lorem.words(),
-    author: faker.name.fullName(),
-    pages: faker.datatype.number({ min: 100, max: 500 }),
-  };
-  authorList.push(newAuthor);
-}
 
 const authorSeed = async () => {
   try {

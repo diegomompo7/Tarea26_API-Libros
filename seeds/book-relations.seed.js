@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { connect } = require("../db.js");
-const { Book } = require("../models/Book.js");
-const { Author } = require("../models/Author.js");
+const { Book } = require("../model/Book.js");
+const { Author } = require("../model/Author.js");
 const { generateRandom } = require("../utils.js");
 
 const carReslationsSeed = async () => {
