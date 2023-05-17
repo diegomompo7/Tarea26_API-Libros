@@ -1,53 +1,66 @@
 const mongoose = require("mongoose");
 const { connect } = require("../db.js");
 const { Book } = require("../model/Book.js");
-const { faker } = require("@faker-js/faker");
 
 const bookList = [
   {
-    title: "Harry Potter",
-    pages: 543,
-    publisher: { name: "Penguin Random House", country: "United States" }
+    title: "Don Quijote de la Mancha",
+    pages: 863,
+    publisher: { name: "Editorial Castalia", country: "España" },
   },
   {
-    title: "1984",
-    pages: 328,
-    publisher: { name: "Bloomsbury", country: "United Kingdom" }
+    title: "Cien años de soledad",
+    pages: 471,
+    publisher: { name: "Editorial Sudamericana", country: "España" },
   },
   {
-    title: "To Kill a Mockingbird",
-    pages: 281,
-    publisher: { name: "Gallimard", country: "France" }
+    title: "La sombra del viento",
+    pages: 545,
+    publisher: { name: "Editorial Planeta", country: "España" },
   },
   {
-    title: "The Great Gatsby",
-    pages: 180,
-    publisher: { name: "Shueisha", country: "Japan" }
+    title: "La Regenta",
+    pages: 951,
+    publisher: { name: "Editorial Anaya", country: "España" },
   },
   {
-    title: "Pride and Prejudice",
-    pages: 279,
-    publisher: {
-      name: "Altaya",
-      country: "Spain",
-    },
+    title: "El laberinto de las aceitunas",
+    pages: 289,
+    publisher: { name: "Editorial Alfaguara", country: "España" },
+  },
+  {
+    title: "Los detectives salvajes",
+    pages: 672,
+    publisher: { name: "Editorial Tusquets", country: "España" },
+  },
+  {
+    title: "La Casa de Bernarda Alba",
+    pages: 112,
+    publisher: { name: "Editorial Espasa Calpe", country: "España" },
+  },
+  {
+    title: "Niebla",
+    pages: 192,
+    publisher: { name: "Editorial Aguilar", country: "España" },
+  },
+  {
+    title: "El amor en los tiempos del cólera",
+    pages: 368,
+    publisher: { name: "Editorial Debolsillo", country: "España" },
+  },
+  {
+    title: "Nada",
+    pages: 215,
+    publisher: { name: "Editorial Seix Barral", country: "España" },
   },
 ];
-
-for (let i = 0; i < 50; i++) {
-  const newBook = {
-    title: faker.lorem.words(),
-    pages: faker.datatype.number({ min: 100, max: 500 }),
-  };
-  bookList.push(newBook);
-}
 
 const bookSeed = async () => {
   try {
     const database = await connect();
     console.log("Tenemos conexión");
 
-    console.log(database.connection.name)
+    console.log(database.connection.name);
 
     // Borrar datos
     await Book.collection.drop();

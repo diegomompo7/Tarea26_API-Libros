@@ -1,14 +1,32 @@
 const express = require("express");
+const bcrypt = require("bcrypt")
 const { Author } = require("../model/Author.js");
+const { isAuth } = require("../middlewares/auth.middleware.js");
+const { generateToken } = require("../utils/token");
 const fs = require("fs");
 const multer = require("multer");
 const upload = multer({ dest: "public" });
 const router = express.Router();
 
+router.get("/", (req, res, next) => {
+  console.log("Estamos en el middlware / car que comprueba parámetros");
+  const page = req.query.page ? parseInt(req.query.page) : 1;
+  const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+
+  if (!isNaN(page) && !isNaN(limit) && page > 0 && limit > 0) {
+    req.query.page = page;
+    req.query.limit = limit;
+    next()
+  } else {
+    console.log("Parámetros no válidos")
+    console.log(JSON.stringify(req.query))
+    res.status(400).json({ error: "Params page or limit are not valid" })
+  }
+})
+
 router.get("/", async (req, res) => {
   try {
-    const page = parseInt(req.query.Page);
-    const limit = parseInt(req.query.limit);
+    const { page, limit } = req.query
     const authors = await Author.find()
       .limit(limit)
       .skip((page - 1) * limit);
@@ -65,9 +83,14 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAuth, async (req, res) => {
   try {
     const id = req.params.id;
+
+    if (req.user.id !== id || req.user.email !== "admin@gmail.com") {
+      return res.status(401).json({ error: "1No tienes autorización para realizar esta operación" });
+    }
+
     const authorDeleted = await Author.findByIdAndDelete(id);
     if (authorDeleted) {
       res.json(authorDeleted);
@@ -78,12 +101,21 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json(error);
   }
 });
-router.put("/:id", async (req, res) => {
+router.put("/:id", isAuth, async (req, res) => {
   try {
     const id = req.params.id;
-    const authorUpdated = await Author.findByIdAndUpdate(id, req.body, { new: true });
+
+    if (req.user.id !== id || req.user.email !== "admin@gmail.com") {
+      return res.status(401).json({ error: "No tienes autorización para realizar esta operación" })
+    }
+
+    const authorUpdated = await Author.findById(id);
     if (authorUpdated) {
-      res.json(authorUpdated);
+      Object.assign(authorUpdated, req.body)
+      await authorUpdated.save()
+      const authorToSend = authorUpdated.toObject()
+      delete authorToSend.password
+      res.json(authorToSend);
     } else {
       res.status(404).json({});
     }
@@ -113,6 +145,36 @@ router.post("/logo-upload", upload.single("logo"), async (req, res, next) => {
     } else {
       fs.unlinkSync(newPath);
       res.status(404).send("Marca no encontrada");
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/login", async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: "Se deben especificar los campos email y password" });
+    }
+
+    const author = await Author.findOne({ email }).select("+password");
+    if (!author) {
+      return res.status(401).json({ error: "Email y/o contraseña incorrectos" });
+    }
+
+    const match = await bcrypt.compare(password, author.password);
+    if (match) {
+      // Quitamos password de la respuesta
+      const authorWithoutPass = author.toObject();
+      delete authorWithoutPass.password;
+
+      const jwtToken = generateToken(author._id, author.email);
+
+      return res.status(200).json({ token: jwtToken });
+    } else {
+      return res.status(401).json({ error: "Email y/o contraseña incorrectos" });
     }
   } catch (error) {
     next(error);

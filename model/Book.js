@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const allowedCountries = ["UNITED STATES", "UNITED KINGDOM", "FRANCE", "JAPAN", "SPAIN"];
+const allowedCountries = ["ESPAÑA"];
 
 // Creamos el schema del usuario
 const bookSchema = new Schema(
@@ -10,7 +10,7 @@ const bookSchema = new Schema(
       type: String,
       required: true,
       minLength: [3, "El nombre debe tener mínimo 3 caracteres"],
-      maxLength: [20, "El nombre defe ser inferior a 20 caracteres"],
+      maxLength: [50, "El nombre debe ser inferior a 50 caracteres"],
       trim: true
     },
     author: {
@@ -30,7 +30,7 @@ const bookSchema = new Schema(
           type: String,
           required: true,
           minLength: [3, "El nombre debe tener mínimo 3 caracteres"],
-          maxLength: [20, "El nombre defe ser inferior a 20 caracteres"],
+          maxLength: [50, "El nombre defe ser inferior a 50 caracteres"],
           trim: true
         },
         country: {
