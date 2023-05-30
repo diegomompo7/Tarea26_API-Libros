@@ -1,49 +1,57 @@
 {
-  "name": "s1-intro-scripts-and-files",
-  "version": "0.0.1",
-  "description": "Test node for Node session 1",
-  "main": "sample.js",
+  "name": "s12-typescript-api",
+  "version": "1.0.0",
+  "description": "Node api with typescript, express and mongo",
+  "main": "index.ts",
   "scripts": {
-    "start": "node --watch index.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "start": "ts-node-dev ./src/index.ts",
+    "start:prod": "npm run build && node ./dist/index.js",
+    "build": "tsc",
+    "seed:authors": "node ./dist/seeds/author.seed.js",
+    "seed:books": "node ./dist/seeds/book.seed.js",
+    "seed:book-relations": "node ./dist/seeds/book-relations.seed.js",
+    "seed:all": "npm run build && npm run seed:authors && npm run seed:books && npm run seed:book-relations",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "seed:book": "node ./seeds/book.seed.js",
-    "seed:author": "node ./seeds/author.seed.js",
-    "seed:relations": "node ./seeds/book-relations.seed.js",
-    "http-sample": "node ./src/http-sample.js",
-    "routes-sample": "nodemon ./src/routes-sample.js",
-    "prepare": "husky install",
-    "lint": "eslint ."
+    "prepare": "husky install"
   },
   "keywords": [
-    "Node"
+    "typescript",
+    "node",
+    "mongo",
+    "express"
   ],
   "author": "Fran Linde",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
-    "module": "^1.2.5",
-    "mongodb": "^5.3.0",
-    "mongoose": "^7.0.5",
-    "moongose": "^1.0.0",
+    "mongoose": "^7.2.0",
     "multer": "^1.4.5-lts.1",
-    "on-finished": "^2.4.1",
-    "prompt-sync": "^4.2.0",
+    "mysql2": "^3.3.2",
     "validator": "^13.9.0"
   },
   "devDependencies": {
-    "@faker-js/faker": "^7.6.0",
-    "eslint": "^8.38.0",
-    "eslint-config-standard": "^17.0.0",
+    "@faker-js/faker": "^8.0.1",
+    "@types/bcrypt": "^5.0.0",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/mongoose": "^5.11.97",
+    "@types/multer": "^1.4.7",
+    "@types/validator": "^13.7.17",
+    "@typescript-eslint/eslint-plugin": "^5.59.6",
+    "eslint": "^8.41.0",
+    "eslint-config-standard-with-typescript": "^34.0.1",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.7.0",
     "eslint-plugin-promise": "^6.1.1",
-    "husky": "^8.0.3",
-    "nodemon": "^2.0.22"
-  },
-  "compilerOptions": {
-      "ignoreDeprecations": "5.0"
+    "husky": "^8.0.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.4"
   }
 }
