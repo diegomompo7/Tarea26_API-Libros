@@ -11,8 +11,8 @@ import {
 
 import express from "express";
 import cors from "cors";
-import { mongoConnect } from "../databases/mongo-db";
-import { sqlConnect } from "../databases/sql-db";
+import { mongoConnect } from "./databases/mongo-db";
+import { sqlConnect } from "./databases/sql-db";
 
 const main = async (): Promise<void> => {
   // Conexión a la BBDD

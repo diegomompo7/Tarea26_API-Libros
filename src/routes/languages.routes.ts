@@ -1,5 +1,5 @@
 import express, { type NextFunction, type Response, type Request } from "express";
-import { sqlQuery } from "../../databases/sql-db";
+import { sqlQuery } from "../databases/sql-db";
 import { type TechCompany } from "../models/sql/TechCompany";
 export const languagesRouter = express.Router();
 
